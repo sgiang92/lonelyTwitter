@@ -19,8 +19,14 @@ public class TweetSetModel {
 	}
 	
 
-	public void addTweet(LonelyTweetModel tweetModel) {
+	public void addTweet(LonelyTweetModel tweetModel) throws IllegalArgumentException {
+		
+		if(tweets.contains(tweetModel)){
+			throw new IllegalArgumentException("tweet already in list");
+		}
+		
 		tweets.add(tweetModel);
+		
 	}
 	
 

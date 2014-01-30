@@ -3,12 +3,11 @@ package ca.ualberta.cs.lonelytwitter.test;
 import java.util.Date;
 
 import android.test.ActivityInstrumentationTestCase2;
-import ca.ualberta.cs.lonelytwitter.ImportantTweetModel;
+import ca.ualberta.cs.lonelytwitter.LonelyTweetModel;
 import ca.ualberta.cs.lonelytwitter.LonelyTwitterActivity;
 import ca.ualberta.cs.lonelytwitter.NormalTweetModel;
 import ca.ualberta.cs.lonelytwitter.TweetSetModel;
-import ca.ualberta.cs.lonelytwitter.LonelyTweetModel;
-
+import android.test.MoreAsserts;
 public class TweetSetModelTest extends ActivityInstrumentationTestCase2<LonelyTwitterActivity> {
 
 
@@ -37,19 +36,26 @@ public class TweetSetModelTest extends ActivityInstrumentationTestCase2<LonelyTw
 		
 		tweets.addTweet(new NormalTweetModel("test tweet",date));
 		assertEquals("after adding a tweet, count should be 1",1,tweets.countTweets());
-		
+		try{
+			tweets.addTweet(new NormalTweetModel("test tweet",date));
+			assertTrue("didnt catch exception",false);
+			}
+		catch(IllegalArgumentException e) {
+			
+		}
 	}
 	
 	public void testGetTweet(){
 		Date date = new Date();
 		TweetSetModel tweets = new TweetSetModel();
-		LonelyTweetModel[] list1 = {new NormalTweetModel("test tweet 1",date), 
-		                            new NormalTweetModel("test tweet 2",date), new NormalTweetModel("test tweet 3",date)};
 		tweets.addTweet(new NormalTweetModel("test tweet 1",date));
+		LonelyTweetModel[] list = tweets.getTweets();
+		assertEquals("list not empy",1,list.length);
 		tweets.addTweet(new NormalTweetModel("test tweet 2",date));
-		tweets.addTweet(new NormalTweetModel("test tweet 3",date));
-		LonelyTweetModel[] list2 = tweets.getTweets();
-		assertEquals("both lists should be equal",list1,list2);
+		list = tweets.getTweets();
+		LonelyTweetModel[] list2 = {new NormalTweetModel("test tweet 1",date), new NormalTweetModel("test tweet 2",date)};
+		MoreAsserts.assertEquals(list2, list);
+		
 		
 	}
 
